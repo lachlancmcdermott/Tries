@@ -13,7 +13,7 @@ namespace Tries
 
         public void Clear()
         {
-
+            Head.Children.Clear();
         }
 
         public void Insert(string word)
@@ -28,10 +28,19 @@ namespace Tries
                 }
                 curr = curr.Children[c];
             }
+            curr.IsWord = true;
+        }
+
+        public bool Remove(string prefix)
+        {
+
+
+            return false;
         }
 
         public bool Contains(string word)
         {
+
             return false;
         }
 
@@ -43,11 +52,6 @@ namespace Tries
         public List<string> GetAllMatchingPrefix(string prefix)
         {
             return null;
-        }
-
-        public bool Remove(string prefix)
-        {
-            return false;
         }
     }
 }
