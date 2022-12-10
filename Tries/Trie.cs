@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -31,27 +32,94 @@ namespace Tries
             curr.IsWord = true;
         }
 
-        public bool Remove(string prefix)
+        public bool Remove(string search)
         {
+            TrieNode curr = Head;
+            Stack<TrieNode> stack = new Stack<TrieNode>();
 
+            for (int i = 0; i < search.Length; i++)
+            {
+                if (curr.Children.ContainsKey(search[i]))
+                {
+                    stack.Push(curr);
+                    curr = curr.Children[search[i]];
+                }
+                else return false;
+            }
 
+            if (curr.Letter == search[search.Length - 1]) return false;
+
+            stack.Push(curr);
+            curr.IsWord = false;
+
+            while (stack.Count != 1)
+            {
+                TrieNode temp = stack.Pop();
+                if (temp.Children.Count >= 1 || temp.IsWord == true)
+                {
+                    return true;
+                }
+                TrieNode t;
+                t = stack.Peek();
+                t.Children.Remove(temp.Letter);
+            }
             return false;
         }
 
-        public bool Contains(string word)
+        public bool Contains(string search)
         {
+            TrieNode curr = Head;
+            Stack<TrieNode> stack = new Stack<TrieNode>();
 
+            for (int i = 0; i < search.Length; i++)
+            {
+                if (curr.Children.ContainsKey(search[i]))
+                {
+                    stack.Push(curr);
+                    curr = curr.Children[search[i]];
+                }
+            }
+            stack.Push(curr);
+            if (stack.Count == search.Length + 1) return true;
             return false;
         }
 
-        private TrieNode SearchNode(string word)
+        public TrieNode SearchNode(string search)
         {
+            TrieNode curr = Head;
+            TrieNode ret;
+            Stack<TrieNode> stack = new Stack<TrieNode>();
+
+            for (int i = 0; i < search.Length; i++)
+            {
+                if (curr.Children.ContainsKey(search[i]))
+                {
+                    stack.Push(curr);
+                    curr = curr.Children[search[i]];
+                }
+            }
+            stack.Push(curr);
+            if (stack.Count == search.Length + 1)
+            {
+                ret = stack.Pop();
+                return ret;
+            }
             return null;
         }
 
-        public List<string> GetAllMatchingPrefix(string prefix)
+        public List<string> GetAllMatchingPrefix(string search)
         {
-            return null;
+            List<string> ret = new List<string>();
+            TrieNode curr = SearchNode(search);
+
+            for (int i = 0; i < curr.Children.Count; i++)
+            {
+                GetAllMatchingPrefix(curr.Children[].Letter);
+            }
+
+            return ret;
+
+            //FIX RECUSIVE CALLS
         }
     }
 }

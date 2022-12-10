@@ -8,7 +8,13 @@
             trie.Insert("babe");
             trie.Insert("baby");
 
-            //try pattern (functions)
+            bool i = trie.Remove("baby");
+
+            bool c = trie.Contains("babee");
+
+            TrieNode node = trie.SearchNode("babeeeeee");
+
+            List<string> s = trie.GetAllMatchingPrefix("babe");
         }
     }
 }
