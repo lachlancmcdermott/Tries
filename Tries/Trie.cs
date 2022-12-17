@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Tries
 {
@@ -107,19 +109,41 @@ namespace Tries
             return null;
         }
 
-        public List<string> GetAllMatchingPrefix(string search)
+        public List<string> GetAllMatchingPrefixSearch(string search)
         {
             List<string> ret = new List<string>();
-            TrieNode curr = SearchNode(search);
+            TrieNode curr = Head;
+            String baseString = string.Empty;
 
-            for (int i = 0; i < curr.Children.Count; i++)
+            for (int i = 0; i < search.Length; i++)
             {
-                GetAllMatchingPrefix(curr.Children[].Letter);
+                if (curr.Children.ContainsKey(search[i]))
+                {
+                    baseString += curr.Children[search[i]].Letter;
+                    curr = curr.Children[search[i]];
+                }
             }
-
+            if(baseString != search)
+            {
+                return ret;
+            }
+            GetAllMatchingPrefix(ret, curr, baseString);
             return ret;
+        }
 
-            //FIX RECUSIVE CALLS
+        public void GetAllMatchingPrefix(List<string> ret, TrieNode start, String baseString)
+        {
+            foreach (var item in start.Children)
+            {
+                string t = baseString;
+                t += item.Key;
+                start = item.Value;
+                if(start.IsWord)
+                {
+                    ret.Add(t);
+                }
+                GetAllMatchingPrefix(ret, start, t);
+            }
         }
     }
 }

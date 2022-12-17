@@ -7,14 +7,18 @@
             Trie trie = new Trie();
             trie.Insert("babe");
             trie.Insert("baby");
+            trie.Insert("babes");
+            trie.Insert("child");
+            trie.Insert("babies");
+            trie.Insert("he");
+            trie.Insert("hell");
+            trie.Insert("hello");
+            trie.Insert("heaven");
+            trie.Insert("havana");
 
-            bool i = trie.Remove("baby");
-
-            bool c = trie.Contains("babee");
-
-            TrieNode node = trie.SearchNode("babeeeeee");
-
-            List<string> s = trie.GetAllMatchingPrefix("babe");
+            List<string> s = trie.GetAllMatchingPrefixSearch("babe");
+            List<string> y = trie.GetAllMatchingPrefixSearch("ha");
+            List<string> qs = trie.GetAllMatchingPrefixSearch("he");
         }
     }
 }
